@@ -30,7 +30,10 @@ export const addStyles = Editor => props => {
 
 export const addLogging = Editor => props => {
 
-    const logState = () => Editor.editorState && console.log(Editor.editorState.toJS())
+    const logState = () => { 
+        console.log("You clicked logState()", props);
+        // console.log(Editor.editorState.toJS()) 
+    }
     const button = styles.button
     return (
         <div>

@@ -1,27 +1,11 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import { Elite } from '../components/editors/RichEditor'
-import { Vanilla, Chocolate } from '../components/editors/VanillaEditor'
-import { Entity } from '../components/editors/EntityEditor'
+import { Hashtags } from '../components/editors/big-byte/HashtagEditor'
 import createContainer from '../components/createContainer'
 
 let c = createContainer();
-let SuperElite = c.SuperElite;
-
-// const myStore = {
-//   soups: [
-//     "Tomato",
-//     "Mushroom",
-//     "Cream of Broccoli"
-//   ],
-//   clothes: undefined,
-//   name: "The Soup Store"
-// }
-
-// const buttons = {
-//   alert1: () => <button onClick={() => alert("No touchy!")}>!</button>,
-//   alert2: () => <button onClick={() => alert("Let's be friends!")}>:D</button>,
-// }
+// let SuperElite = c.SuperElite;
 
 const Home = () => (
   <div>
@@ -32,11 +16,9 @@ const Home = () => (
 
     <div className="hero">
       <h1 className="title">Welcome to Draft-js!</h1>
-      {/* <Vanilla /> */}
-      {/* <Chocolate /> */}
-      <Elite />
-      {/* <SuperElite  /> */}
-      {/* <Entity /> */}
+      {/* <Elite /> */}
+      {/* <ContentState/> */}
+      <Hashtags />
     </div>
 
     <style jsx>{`
@@ -90,6 +72,21 @@ const Home = () => (
 
 export default Home
 
+
+// const myStore = {
+//   soups: [
+//     "Tomato",
+//     "Mushroom",
+//     "Cream of Broccoli"
+//   ],
+//   clothes: undefined,
+//   name: "The Soup Store"
+// }
+
+// const buttons = {
+//   alert1: () => <button onClick={() => alert("No touchy!")}>!</button>,
+//   alert2: () => <button onClick={() => alert("Let's be friends!")}>:D</button>,
+// }
 
 
 // const counterMap = {

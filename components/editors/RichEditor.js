@@ -1,11 +1,6 @@
 import { Editor, EditorState, RichUtils, convertToRaw, convertFromHTML } from 'draft-js';
 import { useState } from 'react'
 
-// const commandMap = {
-//     onFocus: _ => { console.log("I'm insanely focuseD! O_o") },
-//     onBlur: _ => { console.log("Sleepy now...") }
-// }
-
 export const humanize = (editorState) => {
 
     const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
@@ -55,6 +50,7 @@ export const Elite = (props) => {
     // const buttons = Object.values(props.alerts);
     // console.log('buttons: ', buttons);
 
+
     const { root, editor, button } = styles;
 
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
@@ -69,6 +65,13 @@ export const Elite = (props) => {
 
         return 'not-handled';
     }
+
+    // TODO: Unsure what to do, should I plug it in somewhere?
+    // const handlePastedText = (text, styles, editorState) => {
+    //     setEditorState({
+    //         editorState: removeEditorStyles(text, editorState),
+    //     });
+    // };
 
     const boldify = () =>
         setEditorState(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
@@ -95,8 +98,7 @@ export const Elite = (props) => {
     }
 
     const logState = () => console.log('Current state (onFocus):', editorState.toJS())
-    const placeholder = "Start typing already!"
-
+    
     return (
         <div style={root}>
             <h2>I'm rich!!</h2>
@@ -106,10 +108,7 @@ export const Elite = (props) => {
             <button style={button} onClick={clear}>CLR</button>
             <button onClick={logState}>Log</button>
             <div style={editor}>
-                <Editor
-                    // {...commandMap}
-                    // {...buttons}
-                    // placeholder={placeholder}
+                <Editor                    
                     onFocus={logState}
                     handleKeyCommand={handleKeyCommand}
                     editorState={editorState}
