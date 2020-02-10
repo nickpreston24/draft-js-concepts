@@ -9,6 +9,8 @@
 - [ ] Alignment (left, right, center)
 - [ ] simplest possible manual hyperlink creation and coloring/highlighting/underlining; (do not worry about detection for now)
 - [ ] export state to a single html string
-- [ ] H1 - H6.
+- [X] H1 - H6.
 - [ ] Strikethrough
-- [ ] 
+- [ ] Paragraphs (tags)
+- [ ] Print out html to console
+- [x] global theming and color pallete

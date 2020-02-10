@@ -1,77 +1,39 @@
-import React, { useState } from 'react'
-import Head from 'next/head'
-import { Elite } from '../components/editors/RichEditor'
-import { Hashtags } from '../components/editors/big-byte/HashtagEditor'
-import createContainer from '../components/createContainer'
+import React from "react";
+import { Elite } from "../components/editors/RichEditor";
+import pallete from "../pallete.json";
+import { Title } from "../components/Title";
 
-let c = createContainer();
-// let SuperElite = c.SuperElite;
+//TODO: Move to theme.js
+const styles = {
+  head: {
+    color: pallete.primary.white,
+    "&:hover": {
+      color: pallete.hoverColor
+    },
+    backgroundColor: pallete.primary.blue
+  },
+  panel: {
+    backgroundColor: pallete.primary.grey
+  },
+  container: {
+    height: "100%",
+    width: "960px"
+  }
+};
 
-const Home = () => (
-  <div>
-    <Head>
-      <title>Home</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
-    <div className="hero">
-      <h1 className="title">Welcome to Draft-js!</h1>
-      {/* <Elite /> */}
-      {/* <ContentState/> */}
-      <Hashtags />
+const Home = () => {
+  const { panel, container } = styles;
+  return (
+    <div style={container}>
+      <div style={panel}>
+        <Title>Welcome!</Title>
+        <Elite />
+      </div>
     </div>
+  );
+};
 
-    <style jsx>{`
-      .hero {
-        width: 100%;
-        color: #333;
-      }
-      .title {
-        margin: 0;
-        width: 100%;
-        padding-top: 80px;
-        line-height: 1.15;
-        font-size: 48px;
-      }
-      .title,
-      .description {
-        text-align: center;
-      }
-      .row {
-        max-width: 880px;
-        margin: 80px auto 40px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-      }
-      .card {
-        padding: 18px 18px 24px;
-        width: 220px;
-        text-align: left;
-        text-decoration: none;
-        color: #434343;
-        border: 1px solid #9b9b9b;
-      }
-      .card:hover {
-        border-color: #067df7;
-      }
-      .card h3 {
-        margin: 0;
-        color: #067df7;
-        font-size: 18px;
-      }
-      .card p {
-        margin: 0;
-        padding: 12px 0 0;
-        font-size: 13px;
-        color: #333;
-      }
-    `}</style>
-  </div>
-)
-
-export default Home
-
+export default Home;
 
 // const myStore = {
 //   soups: [
@@ -87,7 +49,6 @@ export default Home
 //   alert1: () => <button onClick={() => alert("No touchy!")}>!</button>,
 //   alert2: () => <button onClick={() => alert("Let's be friends!")}>:D</button>,
 // }
-
 
 // const counterMap = {
 //   increment: () => setCount(count + 5),
