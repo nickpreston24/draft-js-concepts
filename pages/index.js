@@ -15,7 +15,7 @@ const styles = {
   panel: {
     backgroundColor: pallete.primary.grey
   },
-  container: {
+  container: {    
     height: "100%",
     width: "960px"
   }

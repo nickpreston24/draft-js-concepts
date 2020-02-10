@@ -1,9 +1,13 @@
 import pallete from "../../pallete.json";
 
 export const PrimaryButton = props => {
+
+  const toggle = props.onToggle || function () { }; // for the strange case where this is null.
+  const style = props.style;
+
   const onToggle = event => {
     event.preventDefault();
-    props.onToggle(props.style);
+    toggle(style)
   };
 
   let className = "RichEditor-styleButton";

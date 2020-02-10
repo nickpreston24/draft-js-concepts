@@ -1,11 +1,13 @@
-import { Editor, EditorState, RichUtils, convertToRaw } from "draft-js";
-import { useState } from "react";
+import { Editor, EditorState, RichUtils, convertToRaw, Modifier } from "draft-js";
+import { useState, useRef } from "react";
+import { stateToHTML } from 'draft-js-export-html';
 import pallete from "../../pallete.json";
 import { humanize } from "./humanize";
-import { PrimaryButton } from "./PrimaryButton";
-import { SubmitButton } from "./SubmitButton";
+import { PrimaryButton } from "../buttons/PrimaryButton";
+import { SubmitButton } from "../buttons/SubmitButton";
 
 export const Elite = () => {
+
   //TODO: Move to theme.js
   const styles = {
     root: {
@@ -24,6 +26,12 @@ export const Elite = () => {
       height: "100%",
       maxHeight: "200px",
       padding: 10
+    },
+    controls: {
+      fontFamily: '\'Helvetica\', sans-serif',
+      fontSize: 14,
+      marginBottom: 10,
+      userSelect: 'none',
     },
     headers: {
       color: pallete.primary.teal
@@ -49,11 +57,21 @@ export const Elite = () => {
       margin: ".3em .3em .3em .3em",
       textAlign: "center"
     }
-  };  
-  
+  };
+
+  const editorRef = useRef(null);
+
   const { root, editor, headers } = styles;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const exportHtml = () => {
+
+    const contentState = editorState.getCurrentContent()
+    let html = stateToHTML(contentState);
+    console.log(html);
+    // console.log(stateToHTML(editorState.getCurrentContent()));
+  }
 
   const handleKeyCommand = (command, state) => {
     const nextState = RichUtils.handleKeyCommand(state, command);
@@ -85,17 +103,63 @@ export const Elite = () => {
 
   const onChange = nextstate => {
     // console.log('Next state: ', nextstate.toJS()) //intercept?
-    let text = humanize(nextstate);
-    console.log("Current Text: ", text);
+    // let text = humanize(nextstate);
+    // console.log("Current Text: ", text);
 
     setEditorState(nextstate);
   };
 
-  const logState = () =>
+  // const focus = () => editorRef.current.focus()
+
+  const logState = () => {
     console.log("Current state (onFocus):", editorState.toJS());
+  };
+
+
+  const toggleColor = (toggledColor) => {
+
+    console.log('toggled color:', toggledColor);
+
+    const selection = editorState.getSelection();
+
+    console.log('selection: ', selection);
+
+    const nextContentState = Object.keys(colorStyleMap)
+      .reduce((contentState, color) => {
+        return Modifier.removeInlineStyle(contentState, selection, color)
+      }, editorState.getCurrentContent())
+
+    let nextEditorState = EditorState.push(
+      editorState,
+      nextContentState,
+      'change-inline-style'
+    )
+
+    const currentStyle = editorState.getCurrentInlineStyle();
+
+    // Unset the style override for the current color:
+    if (selection.isCollapsed()) {
+      console.log('unset style.');
+      nextEditorState = currentStyle.reduce((state, color) => {
+        return RichUtils.toggleInlineStyle(state, color)
+      }, nextEditorState)
+    }
+
+    // If the color is being toggled on, apply it.
+    if (!currentStyle.has(toggledColor)) {
+      console.log('applied color!', currentStyle);
+      nextEditorState = RichUtils.toggleInlineStyle(
+        nextEditorState,
+        toggledColor
+      )
+    }
+
+    onChange(nextEditorState)
+  }
 
   return (
     <div className="RichEditor-root" style={root}>
+
       <h2 style={headers}>I'm rich!!</h2>
 
       <BlockStyleControls
@@ -108,23 +172,36 @@ export const Elite = () => {
         onToggle={toggleInlineStyle}
       />
 
+      <ColorPicker
+        editorState={editorState}
+        onToggle={toggleColor}
+      />
+
       {/* Universal controls */}
       <PrimaryButton onClick={clear}>CE</PrimaryButton>
 
       <div style={editor}>
         <Editor
+          ref={editorRef}
           blockStyleFn={getBlockStyle}
           onFocus={logState}
+          customStyleMap={styleMap}
           handleKeyCommand={handleKeyCommand}
           editorState={editorState}
           onChange={onChange}
         />
       </div>
-      <SubmitButton onClick={logState}>Publish to TPOT</SubmitButton>
-      <div>{JSON.stringify(convertToRaw(editorState.getCurrentContent()))}</div>
+
+      <SubmitButton onClick={exportHtml}>Publish to TPOT</SubmitButton>
+
+      <div>
+        {JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
+      </div>
+
     </div>
   );
 };
+
 
 const BLOCK_TYPES = [
   { label: "H1", style: "header-one" },
@@ -136,10 +213,8 @@ const BLOCK_TYPES = [
   { label: '"', style: "blockquote" },
   { label: "*-", style: "unordered-list-item" },
   { label: "1..3", style: "ordered-list-item" },
-
-  // TODO: Find a tutorial for this specific use case:
-  { label: "Strikethrough", style: "strikethrough" }
-
+  // { label: "-S-", style: "STRIKETHROUGH" },
+  // { label: "-S-", style: "line-through" }
   // { label: "Code Block", style: "code-block" }
 ];
 
@@ -162,17 +237,81 @@ const BlockStyleControls = props => {
 
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map(type => (
+      {BLOCK_TYPES.map(type => {
+        return (
+          <PrimaryButton
+            key={type.label}
+            active={type.style === blockType}
+            label={type.label}
+            onToggle={props.onToggle}
+            style={type.style}
+          />
+        )
+      })}
+    </div>
+  );
+};
+
+const styleMap = {
+  'STRIKETHROUGH': {
+    textDecoration: 'line-through',
+  },
+};
+
+const ColorPicker = props => {
+
+  var currentStyle = props.editorState.getCurrentInlineStyle();
+  // const styles = props.styles;
+
+  return (
+    <div>
+      {COLORS.map(type =>
         <PrimaryButton
           key={type.label}
-          active={type.style === blockType}
+          active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
-        />
-      ))}
+        />)
+      }
     </div>
-  );
+  )
+}
+
+var COLORS = [
+  { label: 'Red', style: 'red' },
+  { label: 'Orange', style: 'orange' },
+  { label: 'Yellow', style: 'yellow' },
+  { label: 'Green', style: 'green' },
+  { label: 'Blue', style: 'blue' },
+  { label: 'Indigo', style: 'indigo' },
+  { label: 'Violet', style: 'violet' },
+];
+
+// This object provides the styling information for our custom color
+// styles.
+const colorStyleMap = {
+  red: {
+    color: 'rgba(255, 0, 0, 1.0)',
+  },
+  orange: {
+    color: 'rgba(255, 127, 0, 1.0)',
+  },
+  yellow: {
+    color: 'rgba(180, 180, 0, 1.0)',
+  },
+  green: {
+    color: 'rgba(0, 180, 0, 1.0)',
+  },
+  blue: {
+    color: 'rgba(0, 0, 255, 1.0)',
+  },
+  indigo: {
+    color: 'rgba(75, 0, 130, 1.0)',
+  },
+  violet: {
+    color: 'rgba(127, 0, 255, 1.0)',
+  },
 };
 
 var INLINE_STYLES = [
