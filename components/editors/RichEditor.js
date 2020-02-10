@@ -49,12 +49,8 @@ export const Elite = () => {
       margin: ".3em .3em .3em .3em",
       textAlign: "center"
     }
-  };
-
-  // console.log('props: ', props);
-  // const buttons = Object.values(props.alerts);
-  // console.log('buttons: ', buttons);
-
+  };  
+  
   const { root, editor, headers } = styles;
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -130,16 +126,6 @@ export const Elite = () => {
   );
 };
 
-// // Custom overrides for "code" style.
-// const styleMap = {
-//   CODE: {
-//     backgroundColor: "rgba(0, 0, 0, 0.05)",
-//     fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-//     fontSize: 16,
-//     padding: 2
-//   }
-// };
-
 const BLOCK_TYPES = [
   { label: "H1", style: "header-one" },
   { label: "H2", style: "header-two" },
@@ -165,25 +151,6 @@ const getBlockStyle = block => {
       return null;
   }
 };
-
-// const StyleButton = props => {
-//   const onToggle = event => {
-//     event.preventDefault();
-//     props.onToggle(props.style);
-//   };
-
-//   let className = "RichEditor-styleButton";
-
-//   if (props.active) {
-//     className += " RichEditor-activeButton";
-//   }
-
-//   return (
-//     <span className={className} onMouseDown={onToggle}>
-//       {props.label}
-//     </span>
-//   );
-// };
 
 const BlockStyleControls = props => {
   const { editorState } = props;
