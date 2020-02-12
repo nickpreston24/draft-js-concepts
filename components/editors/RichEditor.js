@@ -185,7 +185,7 @@ export const Elite = () => {
           ref={editorRef}
           blockStyleFn={getBlockStyle}
           onFocus={logState}
-          customStyleMap={styleMap}
+          customStyleMap={colorStyleMap}
           handleKeyCommand={handleKeyCommand}
           editorState={editorState}
           onChange={onChange}
