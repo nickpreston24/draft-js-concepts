@@ -9,12 +9,14 @@ Needful:
 
 - [x] Bold, Italic, Underline
 - [ ] Alignment (left, right, center)
-- [ ] simplest possible manual hyperlink creation and coloring/highlighting/underlining; (do not worry about detection for now)
-- [ ] export state to a single html string
+- [ ] simplest possible manual hyperlink creation (do not worry about detection for now)
+- [ ] coloring and highlighting
+- [ ] export html state to firestorter or file
 - [X] H1 - H6.
-- [ ] Strikethrough
-- [ ] Paragraphs (tags)
-- [ ] Print out html to console
+- [ ] Strikethrough button
+- [ ] Clear formatting button
+- [ ] Paragraph (indents) button
+- [x] Print out html to console
 - [x] global theming and color pallete
 
 Consider/Optional
