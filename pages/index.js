@@ -1,5 +1,6 @@
 import React from "react";
 import { Elite } from "../components/editors/RichEditor";
+// import WYSIWYG from '../components/editors/samples/wysiwygEditor';
 import pallete from "../pallete.json";
 import { Title } from "../components/Title";
 
@@ -15,9 +16,9 @@ const styles = {
   panel: {
     backgroundColor: pallete.primary.grey
   },
-  container: {    
+  container: {
     height: "100%",
-    width: "960px"
+    width: "960px"  
   }
 };
 
@@ -27,6 +28,7 @@ const Home = () => {
     <div style={container}>
       <div style={panel}>
         <Title>Welcome!</Title>
+        {/* <WYSIWYG /> */}
         <Elite />
       </div>
     </div>
