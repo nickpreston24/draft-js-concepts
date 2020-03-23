@@ -20,8 +20,8 @@
 ### Stage 2
 
 - [ ] Flexboxes around the Editor and panels
-- [ ] export html state to firestorter or file
-- [ ] add inline styles to html outputs
+- [x] export html state to firestorter or file
+- [x] add inline styles to html outputs
 
 ### Stage 3
 - [ ] Strikethrough button
